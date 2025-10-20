@@ -4,22 +4,83 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI Chat</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        margin: 2rem;
+        max-width: 640px;
+      }
+      #chat {
+        border: 1px solid #ddd;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-top: 1rem;
+      }
+      .msg {
+        margin-bottom: 0.5rem;
+      }
+      .user {
+        color: #0066cc;
+      }
+      .ai {
+        color: #333;
+      }
+      .row {
+        display: flex;
+        gap: 8px;
+        margin-top: 1rem;
+      }
+      input {
+        flex: 1;
+        padding: 0.5rem;
+        font-size: 1rem;
+      }
+      button {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+      }
+      button[disabled] {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    </style>
   </head>
   <body>
     <h1>AI Chat App</h1>
     <div id="app">
-      <p>Server läuft. Bereit für Chat-Funktionalität.</p>
-      <button id="go">Go</button>
+      <div id="chat"></div>
+
+      <form id="chatForm" class="row" autocomplete="off">
+        <input id="userMessage" name="userMsg" required />
+        <button type="submit">Send</button>
+      </form>
     </div>
     <script>
-      const button = document.getElementById("go");
-      button.addEventListener("click", async () => {
+      const form = document.getElementById("chatForm");
+      const chat = document.getElementById("chat");
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const input = document.getElementById("userMessage");
+
+        addMsg("user", input.value);
+
         const res = await fetch("/api/chats/1/message", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: "Hello!" })
+          body: JSON.stringify({ message: input.value })
         });
+
+        const data = await res.json();
+        addMsg("ai", data.reply);
       });
+
+      function addMsg(role, text) {
+        chat.innerHTML += `<div class="msg ${role}">${
+          (role === "ai" ? "AI: " : "Du: ") + text
+        }</div>`;
+      }
     </script>
   </body>
 </html>
