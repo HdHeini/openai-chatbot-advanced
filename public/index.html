@@ -1,15 +1,25 @@
 <!DOCTYPE html>
 <html lang="de">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Chat</title>
-</head>
-<body>
-  <h1>AI Chat App</h1>
-  <div id="app">
-    <p>Server läuft. Bereit für Chat-Funktionalität.</p>
-  </div>
- <!--  <script src="app.js"></script> -->
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Chat</title>
+  </head>
+  <body>
+    <h1>AI Chat App</h1>
+    <div id="app">
+      <p>Server läuft. Bereit für Chat-Funktionalität.</p>
+      <button id="go">Go</button>
+    </div>
+    <script>
+      const button = document.getElementById("go");
+      button.addEventListener("click", async () => {
+        const res = await fetch("/api/chats/1/message", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: "Hello!" })
+        });
+      });
+    </script>
+  </body>
 </html>
