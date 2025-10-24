@@ -77,9 +77,10 @@
       });
 
       function addMsg(role, text) {
-        chat.innerHTML += `<div class="msg ${role}">${
-          (role === "ai" ? "AI: " : "Du: ") + text
-        }</div>`;
+        const div = document.createElement("DIV");
+        div.innerText = (role === "ai" ? "AI: " : "Du: ") + text;
+        div.className = "msg " + role;
+        chat.appendChild(div);
       }
     </script>
   </body>
