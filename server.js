@@ -1,6 +1,11 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
+import OpenAI from "openai"
+
+const apiKey = process.env.OPENAI_API_KEY;
+const openAI = new OpenAI({ apiKey });
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
